@@ -1,0 +1,612 @@
+{
+  "name": "SCS1",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        336,
+        -64
+      ],
+      "id": "feba70e5-36fe-4f5d-8159-b44ce953a415",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "=New Zoom Meeting: {{ $('Create a meeting').item.json.topic }}",
+        "message": "=Hi {{$json[\"Name\"]}},<br><br>\n\nYou have been invited to a scheduled Zoom meeting.<br><br>\n\n<b>📅 Topic:</b>{{ $('Create a meeting').item.json.topic }} <br>\n<b>🕒 Start Time:</b>{{ $('Create a meeting').item.json.start_time }}<br>\n<b>🔗 Join Link:</b> <a href=\"{{ $('Create a meeting').item.json.join_url }}\" target=\"_blank\">Click here to join the meeting</a><br><br>\n\nPlease make sure to join a few minutes early to ensure everything works smoothly.<br><br>\n\nBest regards,<br>\n<b>nodemations</b>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        544,
+        48
+      ],
+      "id": "f149b139-f9d7-4b93-a4bf-2728c5550d83",
+      "name": "Send a message",
+      "webhookId": "fb070fb2-d818-4f7e-8f26-5ffd03567fab",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YkP4OSBOe0BxwV8o",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Z13DEzwzo8zVXzcnJKr9qNh41oXoeGPh2xqh5_yJf4A",
+          "mode": "list",
+          "cachedResultName": "Employee_Emails",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Z13DEzwzo8zVXzcnJKr9qNh41oXoeGPh2xqh5_yJf4A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Z13DEzwzo8zVXzcnJKr9qNh41oXoeGPh2xqh5_yJf4A/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        -64
+      ],
+      "id": "2fd56597-a6a7-4d49-8729-343d52309c81",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DpuWTTtmDsSY8TIS",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "4d06a145-2273-42e7-a561-44115124eca1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -352,
+        -80
+      ],
+      "id": "e0c17184-0f5d-480b-badf-4c95cab1b699",
+      "name": "Webhook",
+      "webhookId": "4d06a145-2273-42e7-a561-44115124eca1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "= {{ $json.body.message.toolCallList[0].function.arguments.date }} {{ $json.body.message.toolCallList[0].function.arguments.time }}",
+        "format": "yyyy/MM/dd",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -176,
+        -80
+      ],
+      "id": "b9cd5e38-c29b-4f11-886a-ab86f20595c7",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "amount": 0
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        272
+      ],
+      "id": "fc7bdb93-c604-4034-8a84-b1482d8b810b",
+      "name": "Wait",
+      "webhookId": "b7e69dbc-787e-46c3-8e0d-c3e1625f3f73"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        464,
+        272
+      ],
+      "id": "cba92d32-ea24-4a36-8b11-311efd3c4a5f",
+      "name": "Loop Over Items2"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "=New Zoom Meeting: {{ $('Create a meeting').item.json.topic }}",
+        "message": "=Hi {{$json[\"Name\"]}},<br><br>\n\nThis is a friendly reminder that your scheduled Zoom meeting will begin in <b>10 minutes</b>.<br><br>\n\n<b>📅 Topic:</b> {{ $('Create a meeting').item.json.topic }}<br>\n<b>🕒 Start Time:</b> {{ $('Create a meeting').item.json.start_time }}<br>\n<b>🔗 Join Link:</b> <a href=\"{{ $('Create a meeting').item.json.join_url }}\" target=\"_blank\">Join Zoom Meeting</a><br><br>\n\nPlease make sure your internet connection and audio/video setup are ready before joining.<br><br>\n\nLooking forward to your participation!<br><br>\n\nBest regards,<br>\n<b>nodemations</b>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        640,
+        384
+      ],
+      "id": "dd75116a-262b-4563-b3c9-d4ea66a7f838",
+      "name": "remainder message",
+      "webhookId": "fb070fb2-d818-4f7e-8f26-5ffd03567fab",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YkP4OSBOe0BxwV8o",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/zoom/2025-10-26 12:45:00 n8n testing/audio*.m4a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        752,
+        -240
+      ],
+      "id": "6919ce0e-3b25-436f-92ae-c138aa67c181",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        912,
+        -240
+      ],
+      "id": "9906b986-4dc4-4025-9b79-8515bc3f8653",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "lOGjsKtNJFhg0j8x",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an assistant that generates clear, concise, and professional summaries of any meeting transcript.\n\nInstructions:\n\nRead the meeting transcript carefully.\n\nIdentify and highlight:\n\nKey discussion points\n\nImportant decisions or conclusions\n\nAction items, responsible persons, and deadlines (if mentioned)\n\nKeep the summary professional, well-structured, and easy to read.\n\nUse bullet points or headings (e.g., Key Points, Decisions, Action Items) when appropriate.\n\nSummarize the content faithfully even if it is not related to organizational or workplace topics.\n\nAvoid filler words, repetitive statements, or unnecessary details.\n\nMeeting Transcript:\n\"\"\"\n{{ $json.transcript }}\n\"\"\"\n\nOutput: A concise, well-organized summary capturing all meaningful points, suitable for sharing with anyone interested in the discussion."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        -240
+      ],
+      "id": "6ee87f07-2751-44d8-b817-cd2a057da330",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "lOGjsKtNJFhg0j8x",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      transcript: $json[\"content\"][\"parts\"][0][\"text\"]\n    }\n  }\n]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1056,
+        -240
+      ],
+      "id": "03322320-a9ee-4a5f-9ee6-975a6c09f0b0",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1616,
+        -240
+      ],
+      "id": "7a02aa2e-910e-40b1-a430-9fc8065924a1",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "=Meeting Summary",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <style>\n    body {\n      font-family: \"Segoe UI\", Arial, sans-serif;\n      color: #2c3e50;\n      line-height: 1.6;\n      background-color: #f4f6f8;\n      margin: 0;\n      padding: 0;\n    }\n    .container {\n      max-width: 620px;\n      margin: 30px auto;\n      padding: 25px;\n      background-color: #ffffff;\n      border-radius: 10px;\n      border: 1px solid #e0e0e0;\n      box-shadow: 0px 2px 8px rgba(0,0,0,0.05);\n    }\n    h2 {\n      color: #1a5276;\n      margin-bottom: 10px;\n    }\n    .intro {\n      font-size: 15px;\n      color: #555;\n      margin-bottom: 15px;\n    }\n    .summary {\n      background-color: #f9fafc;\n      border-left: 4px solid #1a5276;\n      padding: 15px 20px;\n      border-radius: 6px;\n      white-space: pre-line; /* Keeps LLM line breaks */\n      font-size: 15px;\n      color: #333;\n    }\n    .summary p {\n      margin: 10px 0;\n    }\n    .footer {\n      margin-top: 25px;\n      font-size: 14px;\n      color: #777;\n      text-align: right;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <h2>Dear Team,</h2>\n\n    <p class=\"intro\">Here’s a well-structured summary of today’s meeting:</p>\n\n    <div class=\"summary\">\n      {{ $('Message a model').item.json.content.parts[0].text }}\n    </div>\n\n    <p class=\"footer\">Best regards,<br><strong>Nodemations</strong></p>\n  </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1792,
+        -112
+      ],
+      "id": "f69a718a-7ea6-4a9e-9573-7404d08d836a",
+      "name": "Send a message1",
+      "webhookId": "fb070fb2-d818-4f7e-8f26-5ffd03567fab",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YkP4OSBOe0BxwV8o",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Z13DEzwzo8zVXzcnJKr9qNh41oXoeGPh2xqh5_yJf4A",
+          "mode": "list",
+          "cachedResultName": "Employee_Emails",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Z13DEzwzo8zVXzcnJKr9qNh41oXoeGPh2xqh5_yJf4A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Z13DEzwzo8zVXzcnJKr9qNh41oXoeGPh2xqh5_yJf4A/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1488,
+        -240
+      ],
+      "id": "bb2cb547-2c5d-4e6c-ae3a-7f6872893b5c",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DpuWTTtmDsSY8TIS",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        -240
+      ],
+      "id": "321efda8-ed66-45ff-a7e8-53ed0ba09b04",
+      "name": "Wait1",
+      "webhookId": "b7e69dbc-787e-46c3-8e0d-c3e1625f3f73"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Z13DEzwzo8zVXzcnJKr9qNh41oXoeGPh2xqh5_yJf4A",
+          "mode": "list",
+          "cachedResultName": "Employee_Emails",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Z13DEzwzo8zVXzcnJKr9qNh41oXoeGPh2xqh5_yJf4A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Z13DEzwzo8zVXzcnJKr9qNh41oXoeGPh2xqh5_yJf4A/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        288,
+        272
+      ],
+      "id": "df85e983-998f-4f0a-a50e-cee88501850d",
+      "name": "Get row(s) in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DpuWTTtmDsSY8TIS",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "topic": "={{ $('Webhook').item.json.body.message.toolCalls[0].function.arguments.topic }}",
+        "additionalFields": {
+          "startTime": "={{ $('Webhook').item.json.body.message.toolCalls[0].function.arguments.date }} {{ $('Webhook').item.json.body.message.toolCalls[0].function.arguments.time }}",
+          "timeZone": "America/Noronha"
+        }
+      },
+      "type": "n8n-nodes-base.zoom",
+      "typeVersion": 1,
+      "position": [
+        16,
+        -64
+      ],
+      "id": "80bc3f22-1377-4f0b-9cce-de0eb8578091",
+      "name": "Create a meeting",
+      "credentials": {
+        "zoomOAuth2Api": {
+          "id": "IbmL3KzTMpEomzh0",
+          "name": "Zoom account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Create a meeting",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "remainder message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "remainder message": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a meeting": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/New_York",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "3c698698-eaf6-4f07-a10f-bbf9592192e7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c898a0c82842a00b26997812f2ec78986b825f67aae9e17400ad67d0ad9ee0a2"
+  },
+  "id": "nz9ByQws1lblwuKI",
+  "tags": []
+}
