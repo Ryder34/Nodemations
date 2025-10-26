@@ -105,3 +105,7 @@ Imagine your assistant “Ava” on Vapi:
 ## 🏁 Conclusion
 The *Nodemations Workflow (Vapi + n8n)* unites **AI conversations** with **automated workflow execution**.  
 It’s a next-generation meeting assistant that can *schedule, summarize, and share* — all hands-free effortlessly!
+
+###  Watch on Youtube
+Here is a sample demo of the work and how it gives the reponse in a youtube video
+🔗link : [Nodemations](https://youtu.be/dXQwjDspVw0)
